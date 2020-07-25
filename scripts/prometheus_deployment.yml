@@ -1,0 +1,110 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: prom-ns
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: prom-svc
+    labels:
+        app: prometheus
+        type: Service
+    namespace: prom-ns 
+spec:
+    selector:
+        app: prometheus
+        type: frontend
+        tool: monitoring
+    type: LoadBalancer
+    ports:
+    - name: container-port
+      port: 9090
+      protocol: TCP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: prom-data-pvc
+    labels:
+        type: prom-data
+        app: prometheus
+    namespace: prom-ns
+spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+        requests:
+            storage: 2Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name:  prom-configmap
+    labels:
+        app: prometheus
+        type: configuration
+    namespace:  prom-ns
+data:
+    prometheus.yml: |
+        # my global config
+        global:
+          scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+          evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+
+        # Alertmanager configuration
+        alerting:
+          alertmanagers:
+            - static_configs:
+              - targets:
+                # - alertmanager:9093
+
+        # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+        rule_files:
+
+        scrape_configs:
+        # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+          - job_name: 'prometheus'
+            static_configs:
+            - targets: ['localhost:9090']
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+    name: prom-deploy
+    labels:
+        app: prometheus
+        type: frontend
+    namespace: prom-ns
+spec:
+    selector:
+        matchLabels:
+            app: prometheus
+            type: frontend
+            tool: monitoring
+    template:
+        metadata:
+            name: prom-pod
+            labels:
+                app: prometheus
+                type: frontend
+                tool: monitoring
+        spec:
+            containers:
+            - name: prom-container
+              image: riteshsoni296/prometheus_server:v1
+              volumeMounts:
+              - name: prom-database
+                mountPath: "/var/lib/prometheus"
+              - name: prom-configuration-file
+                mountPath: "/etc/prometheus/prometheus.yml"
+                subPath: prometheus.yml
+            volumes:
+            - name: prom-database
+              persistentVolumeClaim:
+                claimName: prom-data-pvc
+            - name: prom-configuration-file
+              configMap:
+                name: prom-configmap
+
