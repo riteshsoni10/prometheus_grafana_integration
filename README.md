@@ -67,12 +67,63 @@ Log Directory              : /var/log/grafana
 
 The project deploys the prometheus container image i.e `riteshsoni296/prometheus_server:v1` over kubernetes cluster using kubectl. The data directories of the prometheus server are made persistent to prevent data loss in case of unavoidable circumstances. The kubernetes resources are launched in custom namespaces i.e prom-ns. 
 
+**Prometheus Namespace Resource**
+
 ```
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
     name: prom-ns
+```
+
+**Prometheus Service Reosurce**
+
+```
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: prom-svc
+    labels:
+        app: prometheus
+        type: Service
+    namespace: monitoring-ns 
+spec:
+    selector:
+        app: prometheus
+        type: frontend
+        tool: monitoring
+    #clusterIP: None
+    type: LoadBalancer
+    ports:
+    - name: container-port
+      port: 9090
+      protocol: TCP
+```
+
+where,
+  - type            => represents service type i.e LoadBalancer, NodePort or ClusterIP
+  - spec.ports.port => represent the application port
+
+
+**Prometheus PVC Resource
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: prom-data-pvc
+    labels:
+        type: prom-data
+        app: prometheus
+    namespace: monitoring-ns
+spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+        requests:
+            storage: 2Gi
 ```
 
 The configuration file for prometheus is made persistent using `configMap` Kubernetes resource. The kubernetes reosurce configuration files is present in the repository at location `scripts` with name *prometheus_deployment.yml*
@@ -92,6 +143,7 @@ kubectl create -f scripts/prometheus_deployment.yml
 
 The project deploys the grafana container image i.e `riteshsoni296/grafana_server:v1` over kubernetes cluster using kubectl. The data directories of the grafana server are made persistent to prevent data loss in case of unavoidable circumstances. The service resource configuration to access the grafana server from outside :
 
+**Grafana Service Resource**
 ```
 ---
 apiVersion: v1
@@ -101,7 +153,7 @@ metadata:
     labels:
         app: grafana
         tier: frontend
-    namespace: grafana-ns
+    namespace: monitoring-ns
 spec:
     selector:
         app: grafana
@@ -112,6 +164,39 @@ spec:
     - name: container-port
       port: 3000
       protocol: TCP
+```
+
+**Grafana PVC Resource for Grafana Logs and Grafana Data
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: grafana-data-pvc
+    labels:
+        type: grafana-data
+        app: grafana
+    namespace: monitoring-ns
+spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+        requests:
+            storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: grafana-logs-pvc
+    labels:
+        type: grafana-logs
+        app: grafana
+    namespace: monitoring-ns
+spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Gi    
 ```
 
 The configuration file for grafana is made persistent using `configMap` Kubernetes resource. The kubernetes reosurce configuration files is present in the repository at location `scripts` with name *grafana_deployment.yml*
