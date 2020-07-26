@@ -130,7 +130,7 @@ kubectl create -f scripts/grafana_deployment.yml
 
 ### Integration of Grafana with Prometheus
 
-1. Grafana Server Welcome Login Page
+1. Grafana Server **Welcome Login Page**
 
 <p align="center">
   <img src="screenshots/grafana_login_page.png" width="800" title="Grafana Welcome Page">
@@ -162,17 +162,17 @@ kubectl create -f scripts/grafana_deployment.yml
   <em>Fig 7.: Add Prometheus Data Source </em>
 </p>
 
-5. Configure Data Source
+5. Configure **Data Source**
 
 We can configure the Prometheus Data URL IP in two ways:
 
-a. Using Kubernetes Cluster IP
+*a. Using Kubernetes Cluster IP*
 
-    In case, when Prometheus Service is launched with type LoadBalancer or NodePort i.e it is exposed to world, then we need to configure the Prometheus HTTP URL as `<Kubernetes_clusterIP>:<service_NodePort>`. For example, if Kubernetes Cluster IP i.e in single node cluster is 192.168.99.106 and service node_port 31246, then HTTP URL will be `http://192.168.99.106:31246` 
+   In case, when Prometheus Service is launched with type LoadBalancer or NodePort i.e it is exposed to world, then we need to configure the Prometheus HTTP URL as `<Kubernetes_clusterIP>:<service_NodePort>`. For example, if Kubernetes Cluster IP i.e in single node cluster is 192.168.99.106 and service node_port 31246, then HTTP URL will be `http://192.168.99.106:31246` 
 
-b. Using Prometheus Service Name
+*b. Using Prometheus Service Name*
     
-    In case, when Prometheus service is launched with `clusterIP: None` parameter, then the prometheus service is not exposed to the world. In this case we can configure the HTTP UI as `<service_name>:<application_port_number>`
+   In case, when Prometheus service is launched with `clusterIP: None` parameter, then the prometheus service is not exposed to the world. In this case we can configure the HTTP UI as `<service_name>:<application_port_number>`
     
 <p align="center">
   <img src="screenshots/grafana_prom_integration.png" width="800" title="Data Source Configuration">
@@ -196,13 +196,14 @@ b. Using Prometheus Service Name
   <em>Fig 10.: Add New Dashboard </em>
 </p>
 
-8. Add New Panel
+8. Add **New Panel**
 
 <p align="center">
   <img src="screenshots/grafana_new_panel.png" width="800" title="Panel">
   <br>
   <em>Fig 11.: Add New Panel in Dashboard </em>
 </p>
+
 
  > Source: LinuxWorld Informatics. Private Ltd.
  > 
