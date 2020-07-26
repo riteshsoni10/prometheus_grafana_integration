@@ -134,7 +134,7 @@ kubectl create -f scripts/prometheus_deployment.yml
 ```
 
 <p align="center">
-  <img src="screenshots/prom_resources.png" width="800" title="Prometheus Resources">
+  <img src="screenshots/prom_resources.png" width="950" title="Prometheus Resources">
   <br>
   <em>Fig 2.: Prometheus resources </em>
 </p>
@@ -210,7 +210,7 @@ kubectl create -f scripts/grafana_deployment.yml
 ```
 
 <p align="center">
-  <img src="screenshots/grafana_resources.png" width="800" title="Grafana Resources">
+  <img src="screenshots/grafana_resources.png" width="950" title="Grafana Resources">
   <br>
   <em>Fig 3.: Grafana resources </em>
 </p>
