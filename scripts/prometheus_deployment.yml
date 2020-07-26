@@ -17,7 +17,8 @@ spec:
         app: prometheus
         type: frontend
         tool: monitoring
-    clusterIP: None
+    #clusterIP: None
+    type: LoadBalancer
     ports:
     - name: container-port
       port: 9090
