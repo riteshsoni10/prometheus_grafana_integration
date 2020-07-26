@@ -107,7 +107,7 @@ where,
   - spec.ports.port => represent the application port
 
 
-**Prometheus PVC Resource
+**Prometheus PVC Resource**
 
 ```
 apiVersion: v1
@@ -144,6 +144,7 @@ kubectl create -f scripts/prometheus_deployment.yml
 The project deploys the grafana container image i.e `riteshsoni296/grafana_server:v1` over kubernetes cluster using kubectl. The data directories of the grafana server are made persistent to prevent data loss in case of unavoidable circumstances. The service resource configuration to access the grafana server from outside :
 
 **Grafana Service Resource**
+
 ```
 ---
 apiVersion: v1
@@ -166,7 +167,9 @@ spec:
       protocol: TCP
 ```
 
-**Grafana PVC Resource for Grafana Logs and Grafana Data
+
+**Grafana PVC Resource for Grafana Logs and Grafana Data**
+
 ```
 apiVersion: v1
 kind: PersistentVolumeClaim
