@@ -133,7 +133,7 @@ kubectl create -f scripts/grafana_deployment.yml
 1. Grafana Server **Welcome Login Page**
 
 <p align="center">
-  <img src="screenshots/grafana_login_page.png" width="800" title="Grafana Welcome Page">
+  <img src="screenshots/grafana_login_page.png" width="950" title="Grafana Welcome Page">
   <br>
   <em>Fig 4.: Login Page </em>
 </p>
@@ -141,7 +141,7 @@ kubectl create -f scripts/grafana_deployment.yml
 2. Change password on first time Login
 
 <p align="center">
-  <img src="screenshots/grafana_password_change.png" width="800" title="Grafana Change Password">
+  <img src="screenshots/grafana_password_change.png" width="950" title="Grafana Change Password">
   <br>
   <em>Fig 5.: Change Admin Password </em>
 </p>
@@ -149,7 +149,7 @@ kubectl create -f scripts/grafana_deployment.yml
 3. Add Data Sources
 
 <p align="center">
-  <img src="screenshots/grafana_add_datasources.png" width="800" title="Add DataSources">
+  <img src="screenshots/grafana_add_datasources.png" width="950" title="Add DataSources">
   <br>
   <em>Fig 6.: Grafana Welcome Page </em>
 </p>
@@ -157,7 +157,7 @@ kubectl create -f scripts/grafana_deployment.yml
 4. Add Prometheus Data Source
 
 <p align="center">
-  <img src="screenshots/grafana_select_prometheus.png" width="800" title="Add Prometheus Data Source">
+  <img src="screenshots/grafana_select_prometheus.png" width="950" title="Add Prometheus Data Source">
   <br>
   <em>Fig 7.: Add Prometheus Data Source </em>
 </p>
@@ -175,7 +175,7 @@ We can configure the Prometheus Data URL IP in two ways:
    In case, when Prometheus service is launched with `clusterIP: None` parameter, then the prometheus service is not exposed to the world. In this case we can configure the HTTP UI as `<service_name>:<application_port_number>`
     
 <p align="center">
-  <img src="screenshots/grafana_prom_integration.png" width="800" title="Data Source Configuration">
+  <img src="screenshots/grafana_prom_integration.png" width="950" title="Data Source Configuration">
   <br>
   <em>Fig 8.: Prometheus Data Source Configuration </em>
 </p>
@@ -183,7 +183,7 @@ We can configure the Prometheus Data URL IP in two ways:
 6. Verify the Data source Connection
 
 <p align="center">
-  <img src="screenshots/grafana_prom_data_soure_success.png" width="800" title="Prometheus Data Source">
+  <img src="screenshots/grafana_prom_data_soure_success.png" width="950" title="Prometheus Data Source">
   <br>
   <em>Fig 9.: Verify Data Source </em>
 </p>
@@ -191,7 +191,7 @@ We can configure the Prometheus Data URL IP in two ways:
 7. Configure **New Dashboard**
 
 <p align="center">
-  <img src="screenshots/grafana_new_dashboard.png" width="800" title="Dashboard">
+  <img src="screenshots/grafana_new_dashboard.png" width="950" title="Dashboard">
   <br>
   <em>Fig 10.: Add New Dashboard </em>
 </p>
@@ -199,7 +199,7 @@ We can configure the Prometheus Data URL IP in two ways:
 8. Add **New Panel**
 
 <p align="center">
-  <img src="screenshots/grafana_new_panel.png" width="800" title="Panel">
+  <img src="screenshots/grafana_new_panel.png" width="950" title="Panel">
   <br>
   <em>Fig 11.: Add New Panel in Dashboard </em>
 </p>
