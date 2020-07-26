@@ -62,9 +62,152 @@ Data Directory             : /var/lib/grafana/
 Log Directory              : /var/log/grafana
 ```
 
+
 ### Prometheus Server Deployment
 
-The project deploys the prometheus container image over kubernetes cluster using kubectl 
+The project deploys the prometheus container image i.e `riteshsoni296/prometheus_server:v1` over kubernetes cluster using kubectl. The data directories of the prometheus server are made persistent to prevent data loss in case of unavoidable circumstances. The kubernetes resources are launched in custom namespaces i.e prom-ns. 
+
+```
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: prom-ns
+```
+
+The configuration file for prometheus is made persistent using `configMap` Kubernetes resource. The kubernetes reosurce configuration files is present in the repository at location `scripts` with name *prometheus_deployment.yml*
+
+To create the reosurce, execute the following command
+```
+kubectl create -f scripts/prometheus_deployment.yml
+```
+
+<p align="center">
+  <img src="screenshots/prom_resources.png" width="800" title="Prometheus Resources">
+  <br>
+  <em>Fig 2.: Prometheus resources </em>
+</p>
+
 ### Grafana Server Deployment
 
+The project deploys the grafana container image i.e `riteshsoni296/grafana_server:v1` over kubernetes cluster using kubectl. The data directories of the grafana server are made persistent to prevent data loss in case of unavoidable circumstances. The service resource configuration to access the grafana server from outside :
+
+```
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: grafana-svc
+    labels:
+        app: grafana
+        tier: frontend
+    namespace: grafana-ns
+spec:
+    selector:
+        app: grafana
+        tier: frontend
+        tool: monitoring
+    type: LoadBalancer
+    ports:
+    - name: container-port
+      port: 3000
+      protocol: TCP
+```
+
+The configuration file for grafana is made persistent using `configMap` Kubernetes resource. The kubernetes reosurce configuration files is present in the repository at location `scripts` with name *grafana_deployment.yml*
+
+To create the reosurce, execute the following command
+```
+kubectl create -f scripts/grafana_deployment.yml
+```
+
+<p align="center">
+  <img src="screenshots/grafana_resources.png" width="800" title="Grafana Resources">
+  <br>
+  <em>Fig 3.: Grafana resources </em>
+</p>
+
+
 ### Integration of Grafana with Prometheus
+
+1. Grafana Server Welcome Login Page
+
+<p align="center">
+  <img src="screenshots/grafana_login_page.png" width="800" title="Grafana Welcome Page">
+  <br>
+  <em>Fig 4.: Login Page </em>
+</p>
+
+2. Change password on first time Login
+
+<p align="center">
+  <img src="screenshots/grafana_password_change.png" width="800" title="Grafana Change Password">
+  <br>
+  <em>Fig 5.: Change Admin Password </em>
+</p>
+
+3. Add Data Sources
+
+<p align="center">
+  <img src="screenshots/grafana_add_datasources.png" width="800" title="Add DataSources">
+  <br>
+  <em>Fig 6.: Grafana Welcome Page </em>
+</p>
+
+4. Add Prometheus Data Source
+
+<p align="center">
+  <img src="screenshots/grafana_select_prometheus.png" width="800" title="Add Prometheus Data Source">
+  <br>
+  <em>Fig 7.: Add Prometheus Data Source </em>
+</p>
+
+5. Configure Data Source
+
+We can configure the Prometheus Data URL IP in two ways:
+
+a. Using Kubernetes Cluster IP
+
+    In case, when Prometheus Service is launched with type LoadBalancer or NodePort i.e it is exposed to world, then we need to configure the Prometheus HTTP URL as `<Kubernetes_clusterIP>:<service_NodePort>`. For example, if Kubernetes Cluster IP i.e in single node cluster is 192.168.99.106 and service node_port 31246, then HTTP URL will be `http://192.168.99.106:31246` 
+
+b. Using Prometheus Service Name
+    
+    In case, when Prometheus service is launched with `clusterIP: None` parameter, then the prometheus service is not exposed to the world. In this case we can configure the HTTP UI as `<service_name>:<application_port_number>`
+    
+<p align="center">
+  <img src="screenshots/grafana_prom_integration.png" width="800" title="Data Source Configuration">
+  <br>
+  <em>Fig 8.: Prometheus Data Source Configuration </em>
+</p>
+
+6. Verify the Data source Connection
+
+<p align="center">
+  <img src="screenshots/grafana_prom_data_soure_success.png" width="800" title="Prometheus Data Source">
+  <br>
+  <em>Fig 9.: Verify Data Source </em>
+</p>
+
+7. Configure **New Dashboard**
+
+<p align="center">
+  <img src="screenshots/grafana_new_dashboard.png" width="800" title="Dashboard">
+  <br>
+  <em>Fig 10.: Add New Dashboard </em>
+</p>
+
+8. Add New Panel
+
+<p align="center">
+  <img src="screenshots/grafana_new_panel.png" width="800" title="Panel">
+  <br>
+  <em>Fig 11.: Add New Panel in Dashboard </em>
+</p>
+
+ > Source: LinuxWorld Informatics. Private Ltd.
+ > 
+ > Under Guidance of : Mr. [Vimal Daga](https://in.linkedin.com/in/vimaldaga)
+
+
+
+
