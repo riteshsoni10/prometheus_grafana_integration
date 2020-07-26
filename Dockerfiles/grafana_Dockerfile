@@ -1,0 +1,15 @@
+FROM alpine:latest
+
+LABEL maintainer="Ritesh Kumar (soni199513@gmail.com)"
+RUN apk --no-cache --update add grafana -X http://dl-cdn.alpinelinux.org/alpine/edge/testing &&\
+    mkdir -p /var/lib/grafana/conf/provisioning &&\
+    mkdir -p /var/lib/grafana/public 
+    
+    
+VOLUME [ "/var/lib/grafana", "/var/log/grafana" ]
+
+EXPOSE 3000
+WORKDIR /var/lib/grafana
+ENTRYPOINT /usr/sbin/grafana-server \
+            --homepath=/usr/share/grafana \
+            --config=/etc/grafana.ini
